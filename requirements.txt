@@ -1,0 +1,216 @@
+Absolutely! Here's the fully detailed Software Requirements Document / AI prompt to develop StudyVerse — your all-in-one AI-powered academic Flutter app — including:
+* ✅ Full feature breakdown
+* ✅ Firebase setup (Google Sign-In + Email/Password)
+* ✅ OpenRouter API usage
+* ✅ Firestore-based user-specific history saving
+* ✅ UI, UX, folder structure, model choices, and tools
+* ✅ Deployment readiness
+
+📘 FULL DEVELOPMENT BRIEF FOR AI / DEVELOPER
+App Name: StudyVerse – AI Toolkit for Students Platform: Flutter (Android-first, iOS optional) Backend: Firebase (Authentication + Firestore) AI: OpenRouter (text-only LLMs, free models)
+
+🔰 GOAL
+Build a Flutter mobile application for students that provides multiple study assistance tools powered by AI. Users can sign in using Google Sign-In or email/password, use a variety of text-based academic tools, and view their personal history of AI interactions stored in Firebase Firestore.
+
+🔐 USER AUTHENTICATION
+Firebase Authentication is used for login/register functionality.
+🔹 Login Options:
+* ✅ Google Sign-In (Gmail)
+* ✅ Email/Password
+🔹 Functionality:
+* Auth state persistence
+* Firebasxe user profile (UID, name, email)
+* Show name and email in the Profile screen
+* Allow logout
+* Optional: Delete account
+
+🧠 AI MODULES (TOOLS)
+Each tool accepts text input and returns text output using OpenRouter’s API.
+1. 📄 Smart Summary
+* User pastes notes or textbook text
+* AI returns a clean, bullet-point summary
+* Toggle: “Explain like I’m 10”
+* Model: Mistral: Mistral Nemo (free)
+
+2. ❓ Auto Quiz Maker
+* Input: Topic or note content
+* Output: 5–10 quiz questions (MCQ, T/F, fill-in-the-blanks)
+* Toggle: Question type
+* Model: Meta: Llama 4 Maverick (free)
+
+
+
+3. 📘 Concept Explainer
+* Input: A topic or phrase
+* Output: AI explains it in:
+    * Simple
+    * Intermediate
+    * Advanced format
+* Bonus: Compare two concepts (optional)
+* Model: Google: Gemma 3 27B (free)
+
+
+4. 📝 Assignment Helper
+* Input: Topic + instructions
+* Output: Drafted unique paragraph/article/essay
+* Toggle: Tone (Formal / Technical / Friendly)
+* Model: Nous: DeepHermes 3 Llama 3 8B Preview (free)
+
+
+5. 🗂 Study Planner
+* Input: Subject + days left until exam
+* Output: Personalized daily schedule
+* Model: Google: Gemma 3 27B (free)
+
+6. 🔁 Flashcard Generator
+* Input: Notes or terms
+* Output: List of Q&A flashcards
+* UI: Tappable “flip” cards
+* Model: Mistral: Mistral Nemo (free)
+
+7. 🎤 Debate & Presentation Builder
+* Input: A topic
+* Output:
+    * Arguments for and against
+    * A 1-minute sample speech
+* Model: Nous: DeepHermes 3 Llama 3 8B Preview (free)
+
+
+📦 OPENROUTER INTEGRATION
+🔹 Base URL:
+https://openrouter.ai/api/v1/chat/completions
+🔹 Headers:
+Authorization: Bearer YOUR_OPENROUTER_API_KEY
+Content-Type: application/json
+🔹 Request Body:
+{
+  "model": "mixtral-8x7b",
+  "messages": [
+    {"role": "system", "content": "You are a helpful study assistant."},
+    {"role": "user", "content": "Summarize Newton’s laws of motion."}
+  ]
+}
+🔹 Notes:
+* Use http or dio package
+* Responses are JSON with choices[0].message.content
+* Each tool sends a different system prompt + user message
+
+🧾 FIRESTORE DATABASE (USER HISTORY)
+Use Cloud Firestore to save every AI interaction under the authenticated user.
+🔹 Firestore Structure:
+users (collection)
+  └── {uid} (document)
+        └── history (subcollection)
+              └── {doc_id} (document)
+                  ├── tool_name: "Summary Tool"
+                  ├── input_text: "Photosynthesis is the..."
+                  ├── ai_output: "• Photosynthesis is the process..."
+                  ├── timestamp: Server Timestamp
+🔹 Features:
+* Store every AI interaction per user
+* Show history in list view (latest first)
+* Tap to expand result
+* Swipe to delete
+* Option to delete all
+
+📱 UI / UX
+🔹 App Structure
+Bottom Navigation:
+  [Home] [Tools] [History] [Profile]
+🔹 UI Components
+* Text input box (multi-line)
+* Toggle controls (tone, style, format)
+* Generate button (calls OpenRouter API)
+* Output viewer (scrollable, copyable)
+* Save button (stores in Firestore)
+* History viewer (cards per session)
+🔹 Profile Screen
+* User avatar (from Google or initials)
+* Name + email
+* Logout button
+* Clear history button
+
+🧱 FILE STRUCTURE (RECOMMENDED)
+/lib
+  /auth
+    login_page.dart
+    signup_page.dart
+    auth_controller.dart
+  /screens
+    home.dart
+    summary.dart
+    quiz.dart
+    explain.dart
+    planner.dart
+    assignment.dart
+    flashcards.dart
+    debate.dart
+    motivation.dart
+    history.dart
+    profile.dart
+  /widgets
+    input_box.dart
+    result_display.dart
+    history_card.dart
+    toggle_switch.dart
+  /services
+    openrouter_service.dart
+    firestore_service.dart
+    auth_service.dart
+  /models
+    history_model.dart
+  app.dart
+  main.dart
+
+📦 pubspec.yaml Dependencies
+dependencies:
+  flutter:
+  firebase_core:
+  firebase_auth:
+  cloud_firestore:
+  google_sign_in:
+  http:
+  shared_preferences:
+  get:
+  google_fonts:
+  fluttertoast:
+
+✅ FUNCTIONAL REQUIREMENTS CHECKLIST
+Feature	Status
+Google Sign-In	✅
+Email/Password login	✅
+Firebase Auth session persistence	✅
+OpenRouter API integration	✅
+Text-based AI output	✅
+8 Unique AI tools	✅
+Per-user AI history	✅
+History saving (Firestore)	✅
+Copy/share AI response	✅
+Clear history & logout options	✅
+UI: Material 3 + clean UX	✅
+Android-ready release build	✅
+🚀 DEPLOYMENT CHECKLIST
+* Register Android app in Firebase Console
+* Download google-services.json and place in /android/app
+* Enable Google Sign-In and Email/Password in Firebase Auth
+* Add Firestore database rules (read/write for authenticated users only)
+* Run: flutter build apk --release
+* 
+* Add privacy policy (for OpenRouter + Firebase use)
+* Upload to Google Play (Close Testing → Production)
+* Work on any android device greater than android version 7 upto 16
+
+🤝 OPTIONAL FUTURE FEATURES
+* Cloud sync for saved study plans
+* Reminders/notifications (Firebase Cloud Messaging)
+* In-app purchases or ads
+* Notes import (PDF, DOCX, etc.)
+
+📩 Want the starter code?
+I can now:
+* Generate a working Flutter starter project with:
+    * Firebase login
+    * 1 working AI tool (e.g. Summary)
+    * History saving enabled
+* Or provide sample files: main.dart, openrouter_service.dart, and Firebase setup guide
+Let me know your preference.
